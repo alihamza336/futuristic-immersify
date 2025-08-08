@@ -100,6 +100,45 @@ Colors: HSL format only
 }
 
 @layer components {
+  /* Critical Button System - All buttons MUST show text at rest */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium font-orbitron;
+    @apply ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
+    @apply disabled:pointer-events-none disabled:opacity-50;
+    /* CRITICAL: Text must be visible (opacity: 1) at rest */
+    color: hsl(var(--foreground));
+    opacity: 1;
+    min-height: 44px; /* AA accessibility */
+  }
+
+  .btn--primary {
+    @apply btn;
+    background: var(--gradient-primary);
+    color: hsl(0 0% 100%); /* White text on gradient - high contrast */
+    border: 1px solid hsl(var(--brand-primary) / 0.3);
+  }
+
+  .btn--primary:hover {
+    @apply scale-105;
+    box-shadow: var(--shadow-glow);
+    border-color: hsl(var(--brand-primary));
+    /* Text remains visible on hover */
+  }
+
+  .btn--ghost {
+    @apply btn;
+    color: hsl(var(--brand-primary)); /* Purple text - AA compliant on black */
+    border: 2px solid hsl(var(--brand-primary) / 0.5);
+    background: transparent;
+  }
+
+  .btn--ghost:hover {
+    background: hsl(var(--brand-primary));
+    color: hsl(0 0% 100%); /* White text on purple - high contrast */
+    box-shadow: var(--shadow-glow);
+    /* Text color changes but remains fully visible */
+  }
+
   /* Brand Gradient Text */
   .brand-gradient {
     background: var(--gradient-primary);
@@ -159,6 +198,50 @@ Colors: HSL format only
     backdrop-filter: blur(10px);
     background: hsl(0 0% 0% / 0.8);
     border-bottom: 1px solid hsl(283 100% 48% / 0.2);
+  }
+
+  /* WebGL Scene Container */
+  .webgl-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .webgl-fallback {
+    @apply flex items-center justify-center text-center p-8;
+    background: linear-gradient(135deg, hsl(var(--muted)), hsl(var(--background)));
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius);
+  }
+
+  /* Face Detection Hotspots */
+  .face-hotspot {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    border: 2px dashed hsl(var(--brand-primary) / 0.5);
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .face-hotspot.active {
+    opacity: 1;
+  }
+
+  /* Reduced Motion Overrides */
+  @media (prefers-reduced-motion: reduce) {
+    .floating,
+    .particles::before,
+    .brand-gradient {
+      animation: none;
+    }
+    
+    .card-3d:hover {
+      transform: scale(1.02);
+    }
   }
 }
 
