@@ -1,29 +1,30 @@
 import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
-import VRHeadset3D from './VRHeadset3D'
 import { FuturisticButton } from './FuturisticButton'
 import heroBackground from '@/assets/hero-bg.jpg'
 
 export default function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null)
+  const parallaxRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      if (!sectionRef.current) return
+      if (!sectionRef.current || !parallaxRef.current) return
       
       const rect = sectionRef.current.getBoundingClientRect()
       const x = (e.clientX - rect.left) / rect.width
       const y = (e.clientY - rect.top) / rect.height
       
-      const rotateX = (y - 0.5) * 5
-      const rotateY = (x - 0.5) * 5
+      // Subtle parallax effect (reduced from 3D version)
+      const moveX = (x - 0.5) * 20
+      const moveY = (y - 0.5) * 20
       
-      sectionRef.current.style.transform = `perspective(1000px) rotateX(${-rotateX}deg) rotateY(${rotateY}deg)`
+      parallaxRef.current.style.transform = `translate(${moveX}px, ${moveY}px)`
     }
 
     const handleMouseLeave = () => {
-      if (sectionRef.current) {
-        sectionRef.current.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)'
+      if (parallaxRef.current) {
+        parallaxRef.current.style.transform = 'translate(0px, 0px)'
       }
     }
 
@@ -45,20 +46,21 @@ export default function HeroSection() {
     <section 
       ref={sectionRef}
       id="home" 
-      className="relative min-h-screen flex items-center justify-center overflow-hidden particles transition-transform duration-200"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden particles gradient-mesh transition-all duration-200"
       style={{
-        backgroundImage: `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.8)), url(${heroBackground})`,
+        backgroundImage: `linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.9)), url(${heroBackground})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundAttachment: 'fixed'
       }}
     >
-      {/* Background Effects */}
+      {/* Enhanced Background Effects */}
       <div className="absolute inset-0 bg-gradient-to-br from-brand-primary/10 via-transparent to-brand-secondary/10" />
       
-      {/* 3D VR Headset */}
-      <div className="absolute top-20 right-10 w-96 h-96 opacity-60 floating">
-        <VRHeadset3D scale={0.8} autoRotate={true} />
+      {/* Parallax Background Elements */}
+      <div ref={parallaxRef} className="absolute inset-0 parallax-layer">
+        <div className="absolute top-20 right-20 w-96 h-96 bg-gradient-brand rounded-full opacity-10 blur-3xl floating" />
+        <div className="absolute bottom-20 left-20 w-64 h-64 bg-gradient-glow rounded-full opacity-15 blur-2xl floating" style={{ animationDelay: '2s' }} />
       </div>
 
       {/* Main Content */}
@@ -78,8 +80,7 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.3 }}
           >
-            Immersive digital experiences that push the boundaries of reality. 
-            From cutting-edge AR applications to mind-bending VR worlds and next-generation gaming.
+            Immersive products, from concept to launch.
           </motion.p>
 
           <motion.div 
@@ -97,23 +98,27 @@ export default function HeroSection() {
           </motion.div>
         </motion.div>
 
-        {/* Floating Elements */}
-        <div className="absolute top-1/4 left-10 w-20 h-20 bg-gradient-brand rounded-full opacity-20 animate-floating" style={{ animationDelay: '0s' }} />
-        <div className="absolute bottom-1/4 right-20 w-16 h-16 bg-gradient-glow rounded-full opacity-15 animate-floating" style={{ animationDelay: '2s' }} />
-        <div className="absolute top-1/2 left-1/4 w-12 h-12 bg-brand-secondary rounded-full opacity-25 animate-floating" style={{ animationDelay: '4s' }} />
+        {/* Enhanced Floating Elements */}
+        <div className="absolute top-1/4 left-10 w-20 h-20 bg-gradient-brand rounded-full opacity-20 floating" style={{ animationDelay: '0s' }} />
+        <div className="absolute bottom-1/4 right-20 w-16 h-16 bg-gradient-glow rounded-full opacity-15 floating" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-1/2 left-1/4 w-12 h-12 bg-brand-secondary rounded-full opacity-25 floating" style={{ animationDelay: '4s' }} />
+        
+        {/* New 2.5D Elements */}
+        <div className="absolute top-3/4 right-1/4 w-8 h-8 bg-brand-glow rounded-full opacity-30 floating" style={{ animationDelay: '1s' }} />
+        <div className="absolute top-1/3 right-10 w-6 h-6 bg-gradient-brand rounded-full opacity-20 floating" style={{ animationDelay: '3s' }} />
       </div>
 
-      {/* Scroll Indicator */}
+      {/* Enhanced Scroll Indicator */}
       <motion.div 
         className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 1.2 }}
       >
-        <div className="w-6 h-10 border-2 border-brand-primary/50 rounded-full flex justify-center">
+        <div className="w-6 h-10 border-2 border-brand-primary/50 rounded-full flex justify-center neon-glow">
           <div className="w-1 h-3 bg-brand-primary rounded-full mt-2 animate-bounce" />
         </div>
-        <p className="text-xs text-foreground/60 mt-2 font-orbitron">SCROLL</p>
+        <p className="text-xs text-foreground/60 mt-2 font-orbitron tracking-wider">SCROLL</p>
       </motion.div>
     </section>
   )

@@ -42,7 +42,7 @@ export default function ContactSection() {
           transition={{ duration: 0.8 }}
           className="text-center mb-20"
         >
-          <h2 className="text-title brand-gradient mb-6">Let's Build the Future Together</h2>
+          <h2 className="text-title brand-gradient mb-6">Start a Project</h2>
           <p className="text-subtitle text-foreground/70 max-w-3xl mx-auto">
             Ready to transform your vision into immersive reality? Get in touch and let's create something extraordinary.
           </p>
@@ -111,7 +111,7 @@ export default function ContactSection() {
                 </div>
 
                 <FuturisticButton variant="hero" size="lg" className="w-full" glowEffect>
-                  Launch Project
+                  Start a Project
                 </FuturisticButton>
               </form>
             </Card>

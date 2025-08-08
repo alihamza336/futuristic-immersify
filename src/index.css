@@ -100,6 +100,43 @@ Colors: HSL format only
 }
 
 @layer components {
+  /* CRITICAL BUTTON STYLES - VISIBLE TEXT BY DEFAULT */
+  .btn {
+    @apply inline-flex items-center justify-center rounded-md font-orbitron font-medium tracking-wide transition-all duration-300;
+    @apply border border-transparent px-6 py-3 text-base;
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
+    @apply disabled:pointer-events-none disabled:opacity-50;
+    /* ENSURE TEXT IS ALWAYS VISIBLE */
+    color: hsl(var(--foreground)) !important;
+    opacity: 1 !important;
+  }
+
+  .btn--primary {
+    @apply btn;
+    background: var(--gradient-primary);
+    color: hsl(0 0% 100%) !important; /* White text on gradient - AA contrast */
+    border-color: hsl(283 100% 48%);
+  }
+
+  .btn--primary:hover {
+    transform: scale(1.05);
+    box-shadow: var(--shadow-glow);
+    filter: brightness(1.1);
+  }
+
+  .btn--ghost {
+    @apply btn;
+    background: transparent;
+    color: hsl(283 100% 48%) !important; /* Brand color on black - AA contrast */
+    border-color: hsl(283 100% 48% / 0.5);
+  }
+
+  .btn--ghost:hover {
+    background: hsl(283 100% 48% / 0.1);
+    border-color: hsl(283 100% 48%);
+    box-shadow: 0 0 20px hsl(283 100% 48% / 0.3);
+  }
+
   /* Brand Gradient Text */
   .brand-gradient {
     background: var(--gradient-primary);
@@ -119,12 +156,13 @@ Colors: HSL format only
     text-shadow: var(--text-glow);
   }
 
-  /* Floating Animation */
+  /* Enhanced Floating Animation */
   .floating {
     animation: floating 6s ease-in-out infinite;
+    will-change: transform;
   }
 
-  /* Particle Background */
+  /* Enhanced Particle Background */
   .particles::before {
     content: '';
     position: absolute;
@@ -133,32 +171,86 @@ Colors: HSL format only
     width: 100%;
     height: 100%;
     background-image: 
-      radial-gradient(2px 2px at 20px 30px, hsl(283 100% 60% / 0.3), transparent),
-      radial-gradient(2px 2px at 40px 70px, hsl(320 75% 52% / 0.3), transparent),
-      radial-gradient(1px 1px at 90px 40px, hsl(283 100% 60% / 0.2), transparent),
-      radial-gradient(1px 1px at 130px 80px, hsl(320 75% 52% / 0.2), transparent);
+      radial-gradient(2px 2px at 20px 30px, hsl(283 100% 60% / 0.4), transparent),
+      radial-gradient(2px 2px at 40px 70px, hsl(320 75% 52% / 0.4), transparent),
+      radial-gradient(1px 1px at 90px 40px, hsl(283 100% 60% / 0.3), transparent),
+      radial-gradient(1px 1px at 130px 80px, hsl(320 75% 52% / 0.3), transparent);
     background-repeat: repeat;
     background-size: 150px 100px;
     animation: particles 20s linear infinite;
     pointer-events: none;
+    will-change: transform;
   }
 
-  /* 3D Card Effect */
+  /* 2.5D Card Effect (No WebGL) */
   .card-3d {
     perspective: 1000px;
     transform-style: preserve-3d;
     transition: var(--transition-smooth);
+    will-change: transform;
   }
 
   .card-3d:hover {
-    transform: rotateY(5deg) rotateX(5deg) scale(1.02);
+    transform: translateY(-8px) rotateY(2deg) rotateX(2deg) scale(1.02);
+    filter: drop-shadow(0 20px 40px hsl(283 100% 48% / 0.2));
   }
 
   /* Navigation Glow */
   .nav-glow {
     backdrop-filter: blur(10px);
-    background: hsl(0 0% 0% / 0.8);
+    background: hsl(0 0% 0% / 0.9);
     border-bottom: 1px solid hsl(283 100% 48% / 0.2);
+  }
+
+  /* Parallax Layers */
+  .parallax-layer {
+    will-change: transform;
+    transition: transform 0.1s ease-out;
+  }
+
+  /* Gradient Mesh Background */
+  .gradient-mesh {
+    background: 
+      radial-gradient(circle at 20% 80%, hsl(283 100% 48% / 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, hsl(320 75% 52% / 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 40% 40%, hsl(283 100% 60% / 0.05) 0%, transparent 50%);
+  }
+
+  /* Neon Glow Accents */
+  .neon-glow {
+    position: relative;
+  }
+
+  .neon-glow::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: var(--gradient-primary);
+    border-radius: inherit;
+    opacity: 0;
+    filter: blur(4px);
+    transition: opacity 0.3s ease;
+    z-index: -1;
+  }
+
+  .neon-glow:hover::before {
+    opacity: 0.7;
+  }
+
+  /* Reduced Motion Support */
+  @media (prefers-reduced-motion: reduce) {
+    .floating,
+    .particles::before,
+    .brand-gradient {
+      animation: none;
+    }
+    
+    .card-3d:hover {
+      transform: translateY(-4px) scale(1.01);
+    }
   }
 }
 
@@ -204,4 +296,17 @@ Colors: HSL format only
 @keyframes glow-pulse {
   0%, 100% { box-shadow: 0 0 20px hsl(283 100% 48% / 0.3); }
   50% { box-shadow: 0 0 40px hsl(283 100% 48% / 0.6); }
+}
+
+@keyframes parallax-float {
+  0%, 100% { transform: translateY(0px) translateX(0px); }
+  25% { transform: translateY(-10px) translateX(5px); }
+  50% { transform: translateY(-5px) translateX(-5px); }
+  75% { transform: translateY(-15px) translateX(2px); }
+}
+
+@keyframes mesh-shift {
+  0%, 100% { transform: translateX(0%) rotate(0deg); }
+  33% { transform: translateX(-2%) rotate(1deg); }
+  66% { transform: translateX(2%) rotate(-1deg); }
 }

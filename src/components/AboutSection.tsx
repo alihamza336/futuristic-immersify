@@ -52,7 +52,7 @@ export default function AboutSection() {
           transition={{ duration: 0.8 }}
           className="text-center mb-20"
         >
-          <h2 className="text-title brand-gradient mb-6">Our Journey</h2>
+          <h2 className="text-title brand-gradient mb-6">Why Us</h2>
           <p className="text-subtitle text-foreground/70 max-w-3xl mx-auto">
             From ambitious startup to industry leader, we've been pushing the boundaries of what's possible
           </p>

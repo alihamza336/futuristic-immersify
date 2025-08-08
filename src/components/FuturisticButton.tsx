@@ -1,19 +1,18 @@
-import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { cva, type VariantProps } from "class-variance-authority"
 
 const futuristicButtonVariants = cva(
-  "relative overflow-hidden font-orbitron font-medium tracking-wider transition-all duration-300 transform hover:scale-105",
+  "btn relative overflow-hidden font-orbitron font-medium tracking-wider transition-all duration-300 transform hover:scale-105 neon-glow",
   {
     variants: {
       variant: {
-        hero: "bg-gradient-brand hover:shadow-glow border border-brand-primary/30 text-white hover:border-brand-primary",
-        outline: "border-2 border-brand-primary/50 text-brand-primary hover:bg-brand-primary hover:text-white hover:shadow-glow",
-        ghost: "text-brand-primary hover:bg-brand-primary/10 hover:text-brand-glow",
-        glow: "bg-brand-primary text-white shadow-glow hover:shadow-brand animate-glow-pulse",
+        hero: "btn--primary text-white",
+        outline: "btn--ghost text-brand-primary",
+        ghost: "text-brand-primary hover:bg-brand-primary/10 hover:text-brand-glow border-brand-primary/50",
+        glow: "btn--primary text-white shadow-glow hover:shadow-brand animate-glow-pulse",
       },
       size: {
-        default: "h-12 px-8 py-2",
+        default: "h-12 px-8 py-3",
         sm: "h-9 px-6 text-sm",
         lg: "h-14 px-12 text-lg",
         xl: "h-16 px-16 text-xl",
@@ -42,7 +41,7 @@ export function FuturisticButton({
   ...props
 }: FuturisticButtonProps) {
   return (
-    <Button
+    <button
       className={cn(
         futuristicButtonVariants({ variant, size }),
         glowEffect && "animate-glow-pulse",
@@ -50,11 +49,13 @@ export function FuturisticButton({
       )}
       {...props}
     >
-      <span className="relative z-10">{children}</span>
-      {/* Animated background effect */}
-      <div className="absolute inset-0 bg-gradient-brand opacity-0 transition-opacity duration-300 hover:opacity-20" />
-      {/* Glow effect */}
-      <div className="absolute -inset-1 bg-gradient-brand blur-md opacity-0 transition-opacity duration-300 hover:opacity-30 -z-10" />
-    </Button>
+      {/* ALWAYS VISIBLE TEXT - CRITICAL FOR ACCESSIBILITY */}
+      <span className="relative z-10 font-medium text-inherit opacity-100">
+        {children}
+      </span>
+      
+      {/* Animated background effect - DOES NOT HIDE TEXT */}
+      <div className="absolute inset-0 bg-gradient-brand opacity-0 transition-opacity duration-300 hover:opacity-10 -z-10" />
+    </button>
   )
 }

@@ -41,7 +41,7 @@ export default function PortfolioSection() {
           transition={{ duration: 0.8 }}
           className="text-center mb-20"
         >
-          <h2 className="text-title brand-gradient mb-6">Featured Projects</h2>
+          <h2 className="text-title brand-gradient mb-6">Selected Work</h2>
           <p className="text-subtitle text-foreground/70 max-w-3xl mx-auto">
             Showcasing our latest innovations in immersive technology and interactive experiences
           </p>
