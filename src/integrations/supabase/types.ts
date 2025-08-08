@@ -198,6 +198,14 @@ export type Database = {
         Args: { project_id_param: string; user_id_param: string }
         Returns: Database["public"]["Enums"]["member_role"]
       }
+      is_projects_editor: {
+        Args: { p_project_id: string }
+        Returns: boolean
+      }
+      is_projects_member: {
+        Args: { p_project_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
       member_role: "Owner" | "Editor" | "Viewer"
