@@ -1,12 +1,11 @@
 import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
-import VRHeadsetScene, { VRHeadsetSceneRef } from './VRHeadsetScene'
+import VRHeadset3D from './VRHeadset3D'
 import { FuturisticButton } from './FuturisticButton'
 import heroBackground from '@/assets/hero-bg.jpg'
 
 export default function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null)
-  const headsetRef = useRef<VRHeadsetSceneRef>(null)
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -58,8 +57,8 @@ export default function HeroSection() {
       <div className="absolute inset-0 bg-gradient-to-br from-brand-primary/10 via-transparent to-brand-secondary/10" />
       
       {/* 3D VR Headset */}
-      <div className="absolute top-20 right-10 w-96 h-96 opacity-80">
-        <VRHeadsetScene ref={headsetRef} showControls={false} />
+      <div className="absolute top-20 right-10 w-96 h-96 opacity-60 floating">
+        <VRHeadset3D scale={0.8} autoRotate={true} />
       </div>
 
       {/* Main Content */}
@@ -79,7 +78,8 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.3 }}
           >
-            Immersive products, from concept to launch.
+            Immersive digital experiences that push the boundaries of reality. 
+            From cutting-edge AR applications to mind-bending VR worlds and next-generation gaming.
           </motion.p>
 
           <motion.div 
@@ -88,18 +88,18 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.6 }}
           >
-            <FuturisticButton variant="primary" size="xl" glowEffect>
+            <FuturisticButton variant="hero" size="xl" glowEffect>
               Explore Our Worlds
             </FuturisticButton>
-            <FuturisticButton variant="ghost" size="xl">
+            <FuturisticButton variant="outline" size="xl">
               View Portfolio
             </FuturisticButton>
           </motion.div>
         </motion.div>
 
         {/* Floating Elements */}
-        <div className="absolute top-1/4 left-10 w-20 h-20 bg-gradient-to-br from-brand-primary to-brand-secondary rounded-full opacity-20 animate-floating" style={{ animationDelay: '0s' }} />
-        <div className="absolute bottom-1/4 right-20 w-16 h-16 bg-gradient-to-br from-brand-secondary to-brand-primary rounded-full opacity-15 animate-floating" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-1/4 left-10 w-20 h-20 bg-gradient-brand rounded-full opacity-20 animate-floating" style={{ animationDelay: '0s' }} />
+        <div className="absolute bottom-1/4 right-20 w-16 h-16 bg-gradient-glow rounded-full opacity-15 animate-floating" style={{ animationDelay: '2s' }} />
         <div className="absolute top-1/2 left-1/4 w-12 h-12 bg-brand-secondary rounded-full opacity-25 animate-floating" style={{ animationDelay: '4s' }} />
       </div>
 
