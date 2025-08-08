@@ -8,7 +8,8 @@ import { ProjectsPagination } from '@/components/projects/ProjectsPagination'
 import { CreateProjectModal, type CreateProjectData } from '@/components/projects/CreateProjectModal'
 import { ConfirmModal } from '@/components/projects/ConfirmModal'
 import { FuturisticButton } from '@/components/FuturisticButton'
-import { Archive, Trash2, FileText } from 'lucide-react'
+import { ErrorBoundary } from '@/components/ErrorBoundary'
+import { Archive, Trash2, FileText, RefreshCw } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 export default function Projects() {
@@ -80,9 +81,18 @@ export default function Projects() {
         query = query.overlaps('tags', filters.tags)
       }
 
-      // Apply sorting
-      const [sortField, sortDirection] = filters.sort.split('_')
-      const ascending = sortDirection === 'asc'
+      // Apply sorting - handle compound field names like 'created_at'
+      let sortField = 'created_at'
+      let ascending = false
+      
+      if (filters.sort.includes('_asc')) {
+        sortField = filters.sort.replace('_asc', '')
+        ascending = true
+      } else if (filters.sort.includes('_desc')) {
+        sortField = filters.sort.replace('_desc', '')
+        ascending = false
+      }
+      
       query = query.order(sortField, { ascending })
 
       // Apply pagination
@@ -98,11 +108,21 @@ export default function Projects() {
 
       setProjects(data || [])
       setTotalCount(count || 0)
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching projects:', error)
+      console.error('Query details:', {
+        userId: user?.id,
+        filters,
+        currentPage,
+        pageSize,
+        errorCode: error?.code,
+        errorMessage: error?.message,
+        errorDetails: error?.details
+      })
+      
       toast({
-        title: "Error",
-        description: "Failed to load projects",
+        title: "Failed to load projects",
+        description: error?.message || "An unexpected error occurred",
         variant: "destructive",
       })
     } finally {
@@ -128,8 +148,13 @@ export default function Projects() {
       })
       
       setAvailableTags(Array.from(allTags).sort())
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching tags:', error)
+      console.error('Tags query error details:', {
+        userId: user?.id,
+        errorCode: error?.code,
+        errorMessage: error?.message
+      })
     }
   }, [user])
 
@@ -426,13 +451,14 @@ export default function Projects() {
   }
 
   return (
-    <div className="min-h-screen bg-background particles gradient-mesh">
-      {/* Background effects */}
-      <div className="absolute inset-0 bg-gradient-to-br from-brand-primary/5 via-transparent to-brand-secondary/5" />
-      <div className="absolute top-20 right-20 w-96 h-96 bg-gradient-brand rounded-full opacity-5 blur-3xl floating" />
-      <div className="absolute bottom-20 left-20 w-64 h-64 bg-gradient-glow rounded-full opacity-10 blur-2xl floating" style={{ animationDelay: '2s' }} />
+    <ErrorBoundary>
+      <div className="min-h-screen bg-background particles gradient-mesh">
+        {/* Background effects */}
+        <div className="absolute inset-0 bg-gradient-to-br from-brand-primary/5 via-transparent to-brand-secondary/5" />
+        <div className="absolute top-20 right-20 w-96 h-96 bg-gradient-brand rounded-full opacity-5 blur-3xl floating" />
+        <div className="absolute bottom-20 left-20 w-64 h-64 bg-gradient-glow rounded-full opacity-10 blur-2xl floating" style={{ animationDelay: '2s' }} />
 
-      <div className="relative z-10 container mx-auto px-6 py-12">
+        <div className="relative z-10 container mx-auto px-6 py-12">
         {/* Header */}
         <div className="mb-8">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
@@ -609,6 +635,7 @@ export default function Projects() {
         confirmText={getConfirmText()}
         isDestructive={confirmAction.type === 'delete' || confirmAction.type === 'bulk-delete'}
       />
-    </div>
+        </div>
+      </ErrorBoundary>
   )
 }

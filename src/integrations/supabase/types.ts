@@ -190,6 +190,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      can_access_project: {
+        Args: { project_id_param: string }
+        Returns: boolean
+      }
       get_user_project_role: {
         Args: { project_id_param: string; user_id_param: string }
         Returns: Database["public"]["Enums"]["member_role"]
