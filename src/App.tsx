@@ -5,7 +5,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
-import { useState } from "react";
 import Index from "./pages/Index";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
@@ -14,17 +13,17 @@ import ResetPasswordConfirm from "./pages/ResetPasswordConfirm";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 
-const App = () => {
-  // Create QueryClient inside component to ensure React context is available
-  const [queryClient] = useState(() => new QueryClient({
-    defaultOptions: {
-      queries: {
-        retry: 1,
-        refetchOnWindowFocus: false,
-      },
+// Create QueryClient with minimal configuration to avoid early hook usage
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
     },
-  }));
+  },
+});
 
+function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
@@ -51,6 +50,6 @@ const App = () => {
       </AuthProvider>
     </QueryClientProvider>
   );
-};
+}
 
 export default App;
