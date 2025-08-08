@@ -110,7 +110,7 @@ export default function ContactSection() {
                   />
                 </div>
 
-                <FuturisticButton variant="primary" size="lg" className="w-full" glowEffect>
+                <FuturisticButton variant="hero" size="lg" className="w-full" glowEffect>
                   Launch Project
                 </FuturisticButton>
               </form>
