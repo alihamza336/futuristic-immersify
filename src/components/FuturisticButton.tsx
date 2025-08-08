@@ -1,60 +1,50 @@
-import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
-import { cva, type VariantProps } from "class-variance-authority"
+import { forwardRef } from 'react'
+import { cn } from '@/lib/utils'
 
-const futuristicButtonVariants = cva(
-  "relative overflow-hidden font-orbitron font-medium tracking-wider transition-all duration-300 transform hover:scale-105",
-  {
-    variants: {
-      variant: {
-        hero: "bg-gradient-brand hover:shadow-glow border border-brand-primary/30 text-white hover:border-brand-primary",
-        outline: "border-2 border-brand-primary/50 text-brand-primary hover:bg-brand-primary hover:text-white hover:shadow-glow",
-        ghost: "text-brand-primary hover:bg-brand-primary/10 hover:text-brand-glow",
-        glow: "bg-brand-primary text-white shadow-glow hover:shadow-brand animate-glow-pulse",
-      },
-      size: {
-        default: "h-12 px-8 py-2",
-        sm: "h-9 px-6 text-sm",
-        lg: "h-14 px-12 text-lg",
-        xl: "h-16 px-16 text-xl",
-      },
-    },
-    defaultVariants: {
-      variant: "hero",
-      size: "default",
-    },
-  }
-)
-
-export interface FuturisticButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof futuristicButtonVariants> {
+interface FuturisticButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: 'primary' | 'ghost' | 'outline'
+  size?: 'sm' | 'md' | 'lg' | 'xl'
   children: React.ReactNode
   glowEffect?: boolean
 }
 
-export function FuturisticButton({
-  className,
-  variant,
-  size,
-  children,
-  glowEffect = false,
-  ...props
-}: FuturisticButtonProps) {
-  return (
-    <Button
-      className={cn(
-        futuristicButtonVariants({ variant, size }),
-        glowEffect && "animate-glow-pulse",
-        className
-      )}
-      {...props}
-    >
-      <span className="relative z-10">{children}</span>
-      {/* Animated background effect */}
-      <div className="absolute inset-0 bg-gradient-brand opacity-0 transition-opacity duration-300 hover:opacity-20" />
-      {/* Glow effect */}
-      <div className="absolute -inset-1 bg-gradient-brand blur-md opacity-0 transition-opacity duration-300 hover:opacity-30 -z-10" />
-    </Button>
-  )
-}
+const FuturisticButton = forwardRef<HTMLButtonElement, FuturisticButtonProps>(
+  ({ className, variant = 'primary', size = 'md', children, glowEffect = false, ...props }, ref) => {
+    const baseClasses = 'btn transition-all duration-300 font-orbitron font-medium tracking-wider'
+    
+    const variantClasses = {
+      primary: 'btn--primary',
+      ghost: 'btn--ghost',
+      outline: 'btn--ghost' // Same styling as ghost for now
+    }
+    
+    const sizeClasses = {
+      sm: 'px-4 py-2 text-sm h-9',
+      md: 'px-6 py-3 text-base h-11',
+      lg: 'px-8 py-4 text-lg h-14',
+      xl: 'px-12 py-5 text-xl h-16'
+    }
+
+    return (
+      <button
+        ref={ref}
+        className={cn(
+          baseClasses,
+          variantClasses[variant],
+          sizeClasses[size],
+          glowEffect && 'animate-glow-pulse',
+          className
+        )}
+        {...props}
+      >
+        <span className="relative z-10">{children}</span>
+        {/* Hover glow effect */}
+        <div className="absolute inset-0 bg-gradient-to-r from-brand-primary to-brand-secondary opacity-0 hover:opacity-20 transition-opacity duration-300 rounded-md" />
+      </button>
+    )
+  }
+)
+
+FuturisticButton.displayName = 'FuturisticButton'
+
+export { FuturisticButton }

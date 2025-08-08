@@ -52,7 +52,7 @@ export default function Navigation() {
 
           {/* CTA Button */}
           <div className="hidden md:block">
-            <FuturisticButton variant="outline" size="sm">
+            <FuturisticButton variant="ghost" size="sm">
               Get Started
             </FuturisticButton>
           </div>
