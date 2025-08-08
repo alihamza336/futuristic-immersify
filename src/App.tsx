@@ -10,6 +10,7 @@ import SignUp from "./pages/SignUp";
 import ResetPassword from "./pages/ResetPassword";
 import ResetPasswordConfirm from "./pages/ResetPasswordConfirm";
 import Dashboard from "./pages/Dashboard";
+import Projects from "./pages/Projects";
 import NotFound from "./pages/NotFound";
 
 function App() {
@@ -28,6 +29,11 @@ function App() {
             <Route path="/dashboard" element={
               <ProtectedRoute>
                 <Dashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/dashboard/projects" element={
+              <ProtectedRoute>
+                <Projects />
               </ProtectedRoute>
             } />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

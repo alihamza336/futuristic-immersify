@@ -155,7 +155,10 @@ export default function Dashboard() {
                 <p className="text-muted-foreground mb-6">
                   Create your first AR, VR, or Gaming project to get started
                 </p>
-                <FuturisticButton variant="hero">
+                <FuturisticButton 
+                  variant="hero"
+                  onClick={() => window.location.href = '/dashboard/projects'}
+                >
                   Start New Project
                 </FuturisticButton>
               </div>

@@ -41,15 +41,169 @@ export type Database = {
         }
         Relationships: []
       }
+      project_activity: {
+        Row: {
+          action: string
+          actor_id: string
+          created_at: string
+          id: string
+          meta: Json | null
+          project_id: string
+        }
+        Insert: {
+          action: string
+          actor_id: string
+          created_at?: string
+          id?: string
+          meta?: Json | null
+          project_id: string
+        }
+        Update: {
+          action?: string
+          actor_id?: string
+          created_at?: string
+          id?: string
+          meta?: Json | null
+          project_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_activity_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      project_members: {
+        Row: {
+          created_at: string
+          id: string
+          project_id: string
+          role: Database["public"]["Enums"]["member_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          project_id: string
+          role?: Database["public"]["Enums"]["member_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          project_id?: string
+          role?: Database["public"]["Enums"]["member_role"]
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_members_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      project_notes: {
+        Row: {
+          author_id: string
+          body: string
+          created_at: string
+          id: string
+          mentions: string[] | null
+          project_id: string
+        }
+        Insert: {
+          author_id: string
+          body: string
+          created_at?: string
+          id?: string
+          mentions?: string[] | null
+          project_id: string
+        }
+        Update: {
+          author_id?: string
+          body?: string
+          created_at?: string
+          id?: string
+          mentions?: string[] | null
+          project_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_notes_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      projects: {
+        Row: {
+          created_at: string
+          id: string
+          is_archived: boolean
+          owner_id: string
+          progress: number
+          service_type: Database["public"]["Enums"]["service_type"]
+          status: Database["public"]["Enums"]["project_status"]
+          summary: string | null
+          tags: string[] | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_archived?: boolean
+          owner_id: string
+          progress?: number
+          service_type?: Database["public"]["Enums"]["service_type"]
+          status?: Database["public"]["Enums"]["project_status"]
+          summary?: string | null
+          tags?: string[] | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_archived?: boolean
+          owner_id?: string
+          progress?: number
+          service_type?: Database["public"]["Enums"]["service_type"]
+          status?: Database["public"]["Enums"]["project_status"]
+          summary?: string | null
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_user_project_role: {
+        Args: { project_id_param: string; user_id_param: string }
+        Returns: Database["public"]["Enums"]["member_role"]
+      }
     }
     Enums: {
-      [_ in never]: never
+      member_role: "Owner" | "Editor" | "Viewer"
+      project_status:
+        | "Draft"
+        | "In Progress"
+        | "Blocked"
+        | "Review"
+        | "Completed"
+      service_type: "AR" | "VR" | "Gaming"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -176,6 +330,16 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      member_role: ["Owner", "Editor", "Viewer"],
+      project_status: [
+        "Draft",
+        "In Progress",
+        "Blocked",
+        "Review",
+        "Completed",
+      ],
+      service_type: ["AR", "VR", "Gaming"],
+    },
   },
 } as const
